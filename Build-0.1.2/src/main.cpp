@@ -14,7 +14,8 @@
 
 #include "clsPCA9555.h"
 #include <LiquidCrystal_I2C.h>
-#include "BvB-Functions.h"   //contains keypad functions, 1/2 second pulse
+//#include "BvB-Functions.h"   //contains keypad functions, 1/2 second pulse
+#include "i2c_keypad.h"
 
 
 
@@ -23,37 +24,38 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // set the LCD address to 0x27 for a 16 char
 #define LED_TWO ED8
 #define Analog_In A0
 
-void setup() {
-        ioport.begin();
-        ioport.setClock(400000);
-        lcd.init();               // initialize the lcd
-        lcd.backlight();
-        setup_keypad();
-        Serial.begin(9600);
-        pinMode(LED_ONE, OUTPUT);
-        ioport.pinMode(LED_TWO, OUTPUT);
-        lcd.setCursor(0, 0); lcd.print("Press a Key");
+void setup()
+{
+	ioport.begin();
+	ioport.setClock(400000);
+	lcd.init();                   // initialize the lcd
+	lcd.backlight();
+	setup_keypad();
+	Serial.begin(9600);
+	pinMode(LED_ONE, OUTPUT);
+	ioport.pinMode(LED_TWO, OUTPUT);
+	lcd.setCursor(0, 0); lcd.print("Press a Key");
 }
 
-int previousKey=0, Charachter;
+int previousKey = 0, Charachter;
 
-void loop() {
-        digitalWrite(LED_ONE,pulse500());
-        ioport.digitalWrite(LED_TWO,!pulse500());
+void loop()
+{
+	digitalWrite(LED_ONE, pulse500());
+	ioport.digitalWrite(LED_TWO, !pulse500());
 
-        unsigned long start = millis();
-        Charachter = I2c_getKey();      //Get key from keypad on extension board
-        int stop = millis() - start;
+	unsigned long start = millis();
+	Charachter = I2c_getKey();          //Get key from keypad on extension board
+	int stop = millis() - start;
 
-        lcd.setCursor(0, 0); lcd.print(stop); lcd.print("          ");
+	lcd.setCursor(0, 0); lcd.print(stop); lcd.print("          ");
 
-        if (Charachter != previousKey) { //only output when there is a new charachter
-                previousKey = Charachter;
-                if (Charachter != 0) {
-                        lcd.setCursor(0, 1); lcd.print(I2c_getCharachter());
-                }
-                else {
-                        lcd.setCursor(0, 1); lcd.print("  ");
-                }
-        }
+	if (Charachter != previousKey) {       //only output when there is a new charachter
+		previousKey = Charachter;
+		if (Charachter != 0) {
+			lcd.setCursor(0, 1); lcd.print(I2c_getCharachter());
+		}else  {
+			lcd.setCursor(0, 1); lcd.print("  ");
+		}
+	}
 }
