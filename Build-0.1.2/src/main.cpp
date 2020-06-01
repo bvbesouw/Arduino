@@ -34,6 +34,7 @@ void setup() {
   lcd.clear();
   setup_keypad();
   setup_stepper();
+
   lcd.setCursor(0, 0);
   lcd.print("low      ");
   lcd.setCursor(0, 1);
@@ -43,32 +44,33 @@ void setup() {
   ioport.pinMode(LED_TWO, OUTPUT);
 }
 
-int previousKey = 0, Charachter;
+// int previousDir = forward;
 
 void loop() {
   lcd.setCursor(6, 0);
-  stepDelay = map(analogRead(lowspeed_in), 0, 1023, 50, 100);
+  stepDelay = map(analogRead(lowspeed_in), 0, 1023, 1, 255);
   lcd.print(stepDelay);
   lcd.print("           ");
   lcd.setCursor(6, 1);
-  fastStepDelay = map(analogRead(highspeed_in), 0, 1023, 1, 50);
+  fastStepDelay = map(analogRead(highspeed_in), 0, 1023, 1, 255);
   lcd.print(fastStepDelay);
   lcd.print("           ");
 
   unsigned long start = millis();
+  // int charachter = I2c_getKey();
 
   switch (I2c_getKey()) {
   case 4:
-    step(forward, fast);
-    break; // and exits the switch
+    step(forward, fastStepDelay);
+    break;
   case 8:
-    step(forward, slow);
+    step(forward, stepDelay);
     break;
   case 12:
-    step(backward, slow);
-    break; // and exits the switch
+    step(backward, stepDelay);
+    break;
   case 16:
-    step(backward, fast);
+    step(backward, fastStepDelay);
     break;
   }
 

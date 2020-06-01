@@ -36,9 +36,7 @@ int I2c_getKey() {
   for (int i = R1; i < R4 + 1; ++i) { // Go through rows 0-3
     if (not ioport.digitalRead(i)) {  // If a row is low go check the column
       int c = C1;                     // Start at Column 1
-      while (not ioport.digitalRead(
-          i)) // if input is still low, happens when column is HIGH. First read
-              // will always be LOW
+      while (not ioport.digitalRead(i))
         ioport.digitalWrite(c++, HIGH); // go to next column and set it HIGH
       int col = c;
       for (c = C1; c < col; ++c)     // go though all columns
