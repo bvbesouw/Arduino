@@ -39,7 +39,7 @@ void setup() {
   lcd.print("low      ");
   lcd.setCursor(0, 1);
   lcd.print("high      ");
-  Serial.begin(9600);
+  Serial.begin(38400);
   pinMode(LED_ONE, OUTPUT);
   ioport.pinMode(LED_TWO, OUTPUT);
 }
@@ -48,15 +48,15 @@ void setup() {
 
 void loop() {
   lcd.setCursor(6, 0);
-  stepDelay = map(analogRead(lowspeed_in), 0, 1023, 1, 255);
+  stepDelay = map(analogRead(lowspeed_in), 0, 1023, 8000, 16383);
   lcd.print(stepDelay);
   lcd.print("           ");
   lcd.setCursor(6, 1);
-  fastStepDelay = map(analogRead(highspeed_in), 0, 1023, 1, 255);
+  fastStepDelay = map(analogRead(highspeed_in), 0, 1023, 1, 8000);
   lcd.print(fastStepDelay);
   lcd.print("           ");
 
-  unsigned long start = millis();
+  // unsigned long start = millis();
   // int charachter = I2c_getKey();
 
   switch (I2c_getKey()) {
@@ -74,6 +74,6 @@ void loop() {
     break;
   }
 
-  unsigned long stop = millis();
-  Serial.println(1000 / (stop - start));
+  // unsigned long stop = millis();
+  // Serial.println(1000 / (stop - start));
 }

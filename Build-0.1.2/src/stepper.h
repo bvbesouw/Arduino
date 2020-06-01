@@ -9,8 +9,8 @@ const int dirPin = 4;    // direction pin on pin 4
 const int farStop = 5;   // far stop input on pin 5
 const int closeStop = 6; // close stop input on pin 6
 
-byte fastStepDelay;
-byte stepDelay;
+unsigned int fastStepDelay;
+unsigned int stepDelay;
 bool previousDir = forward;
 unsigned long totalStepCounter;
 
@@ -20,12 +20,15 @@ void homeFixture() {
     digitalWrite(stepPin, HIGH);
     delay(20);
     digitalWrite(stepPin, LOW);
+    totalStepCounter = 10; // make sure it won't go negative
   }
+
   while ((digitalRead(closeStop))) { // move to until away from closeStop
     digitalWrite(dirPin, forward);
     digitalWrite(stepPin, HIGH);
     delay(20);
     digitalWrite(stepPin, LOW);
+    ++totalStepCounter;
   }
   totalStepCounter = 0;
 }
@@ -56,7 +59,7 @@ void step(bool direction, byte speed) {
     --totalStepCounter;
   }
 
-  delay(speed);
+  delayMicroseconds(speed);
   digitalWrite(stepPin, LOW);
-  Serial.println(totalStepCounter);
+  //  Serial.println(totalStepCounter);
 }
