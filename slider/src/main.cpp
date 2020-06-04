@@ -14,7 +14,7 @@
    looks like we can
 */
 
-#include "../lib/clsPCA9555.h"
+#include "clsPCA9555.h"
 #include "i2c_keypad.h"
 #include "stepper.h"
 #include <LiquidCrystal_I2C.h>
