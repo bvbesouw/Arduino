@@ -24,6 +24,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 //#define LED_TWO ED8
 
 void setup() {
+  Serial.begin(9600);
   ioport.begin();
   ioport.setClock(400000);
   lcd.init(); // initialize the lcd
@@ -31,32 +32,14 @@ void setup() {
   lcd.clear();
   setup_keypad();
   setup_stepper();
-
-  lcd.setCursor(0, 0);
-  lcd.print("low      ");
-  lcd.setCursor(0, 1);
-  lcd.print("high      ");
-  Serial.begin(115200);
-  // pinMode(LED_ONE, OUTPUT);
-  // ioport.pinMode(LED_TWO, OUTPUT);
 }
 
 // int previousDir = forward;
 
 void loop() {
-  lcd.setCursor(6, 0);
-
-  lcd.print(stepDelay);
-  lcd.print("           ");
-  lcd.setCursor(6, 1);
-  // fastStepDelay = map(analogRead(highspeed_in), 0, 1023, 0, 255);
-  // fastStepDelay = analogRead(highspeed_in);
-  lcd.print(fastStepDelay);
-  lcd.print("           ");
-  Serial.println(digitalRead(farStop));
   unsigned long start = millis();
-
-  switch (I2c_getKey(false)) {
+  Serial.println("test");
+  switch (I2c_getKey(true)) {
   case 4:
     while (I2c_getKey(true) == 4) {
       step(forward, fastStepDelay);
@@ -73,10 +56,20 @@ void loop() {
     }
     break;
   case 13:
-    Serial.println("reset setting");
+    lcd.setCursor(0, 0);
+    lcd.print("cancel settings");
+    while (I2c_getKey(true) == 13) {
+    }
+    lcd.setCursor(0, 0);
+    lcd.print("               ");
     break;
   case 15:
-    Serial.println("confirm setting");
+    lcd.setCursor(0, 0);
+    lcd.print("confirm settings");
+    while (I2c_getKey(true) == 15) {
+    }
+    lcd.setCursor(0, 0);
+    lcd.print("                 ");
     break;
   case 16:
     while (I2c_getKey(true) == 16) {

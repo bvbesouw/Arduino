@@ -1,13 +1,14 @@
+#include "clsPCA9555.h"
 
 #define forward true
 #define backward false
 #define fast true
 #define slow false
 
-const int stepPin = 3;   // step pin on pin 3
-const int dirPin = 4;    // direction pin on pin 4
-const int farStop = 5;   // far stop input on pin 5
-const int closeStop = 6; // close stop input on pin 6
+const int stepPin = 3;     // step pin on pin 3
+const int dirPin = 4;      // direction pin on pin 4
+const int farStop = ED8;   // far stop input on expansion pin 8
+const int closeStop = ED9; // close stop input on expansion pin 9
 
 const byte fastStepDelay = 0;
 const byte stepDelay = 5;
@@ -29,14 +30,13 @@ void homeFixture() {
     digitalWrite(stepPin, HIGH);
     delay(20);
     digitalWrite(stepPin, LOW);
-    ++totalStepCounter;
   }
-  totalStepCounter += 10;
+  totalStepCounter += 0;
 }
 
 void setup_stepper() {
-  pinMode(farStop, INPUT_PULLUP);
-  pinMode(closeStop, INPUT_PULLUP);
+  ioport.pinMode(farStop, INPUT_PULLUP);
+  ioport.pinMode(closeStop, INPUT_PULLUP);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   digitalWrite(dirPin, forward);
@@ -50,7 +50,7 @@ void step(bool direction, unsigned int speed) {
     previousDir = direction;
   }
 
-  if ((direction == forward) && (not digitalRead(farStop))) {
+  if ((direction == forward) && (not ioport.digitalRead(farStop))) {
     digitalWrite(stepPin, HIGH);
     ++totalStepCounter;
   }
@@ -62,5 +62,5 @@ void step(bool direction, unsigned int speed) {
 
   delay(speed);
   digitalWrite(stepPin, LOW);
-  //Serial.println(speed);
+  // Serial.println(speed);
 }

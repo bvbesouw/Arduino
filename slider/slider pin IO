@@ -1,0 +1,19 @@
+Pin out
+
+on UNO
+Pin  3: stepPin       Moves motor one step
+Pin  4: dirPin        Sets direction of motor
+Pin A4: I2c           Communication to display
+Pin A5: I2c           Communication to display
+
+on clsPCA9555
+Pin ED0:              Keypad Row 1
+Pin ED1:              Keypad Row 2
+Pin ED2:              Keypad Row 3
+Pin ED3:              Keypad Row 4
+Pin ED4:              Keypad Column 1
+Pin ED5:              Keypad Column 2
+Pin ED6:              Keypad Column 3
+Pin ED7:              Keypad Column 4
+Pin ED8:              Far stop photo switch
+Pin ED9:              Close stop photo switch
